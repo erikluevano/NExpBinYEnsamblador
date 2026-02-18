@@ -1,0 +1,1 @@
+Explico el flujo de las instrucciones mas gráficamente con gdb
