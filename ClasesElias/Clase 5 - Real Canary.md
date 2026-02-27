@@ -122,7 +122,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 zsh: IOT instruction  ./main_canary
 ```
 
-En canary se aborta directamente, en el normal sobreescribe A pero pues no es válida esa dirección.
+En canary se aborta directamente, en el normal sobreescribe A  al return adress pero pues no es válida esa dirección.
 
 ---
 
@@ -214,7 +214,7 @@ Dump of assembler code for function vuln:
    0x00000000004011af <+44>:    call   0x401050 <read@plt>
    0x00000000004011b4 <+49>:    nop
    0x00000000004011b5 <+50>:    mov    rax,QWORD PTR [rbp-0x8] <-- Aquí se clona el valor real de canary a rax
-   0x00000000004011b9 <+54>:    sub    rax,QWORD PTR fs:0x28 <-- aquí lo resta a rax que tiene la copia de canary el canary real
+   0x00000000004011b9 <+54>:    sub    rax,QWORD PTR fs:0x28 <-- aquí se le resta a rax que tiene la copia de canary el canary real
    0x00000000004011c2 <+63>:    je     0x4011c9 <vuln+70> <-- Le hace un jump equal a +70: leave
    0x00000000004011c4 <+65>:    call   0x401040 <__stack_chk_fail@plt> <-- Se brincaría esto si son iguales, sino pues truena con este
    0x00000000004011c9 <+70>:    leave
@@ -463,7 +463,7 @@ Entonces el canary sufrió por el leak de `puts` al leer entre 2 `reads`. Pues s
 
 ## Introducción a Format String
 
-`printf` la vulnerabilidad **format string** será la vista la siguiente clase. Consiste en un mal uso del input del usuario sea mal usado.
+`printf` la vulnerabilidad **format string** será la vista la siguiente clase. Consiste en un mal uso del input del usuario, aprovechándonos de estos formatos.
 
 Es decir que podemos hacer que nuestra entrada en lugar de ser tomada como un literal string (`"literalstring"`) sea tomado como un formato de `printf`:
 

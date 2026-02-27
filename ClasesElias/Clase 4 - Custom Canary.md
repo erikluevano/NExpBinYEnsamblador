@@ -85,7 +85,7 @@ int main() {
 }
 ```
 
-Cuando cambia es porque el original ya no es como la copia porque sobrepasamos el buffer.
+Cuando cambia es porque el original ya no es como la copia porque sobrepasamos el buffer sobre escribiendo al canary generado antes de mandar a llamar una entrada al usuario.
 
 ---
 
@@ -311,7 +311,7 @@ Nuestro canary está aquí:
 0x000000000040117e <+18>:    mov    QWORD PTR [rbp-0x14],rax
 ```
 
-`0x14` = 20 y mide 8
+`0x14` = 20 y por x86_64 registros que mide 8
 
 Como debemos ocupar los del canary son 20 - 8, pero a su vez ocupamos sobreescribir el base pointer `rbp` se le suman 8.
 

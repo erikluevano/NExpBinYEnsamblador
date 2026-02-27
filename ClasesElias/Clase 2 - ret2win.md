@@ -143,7 +143,7 @@ El stack aunque sea una pila crece para abajo, es decir si vemos los elementos m
 
 El base pointer rbp sirve para acceder a las variables locales.
 
-Una vez llegado a la última invocación de nuestro código vamos a tener que retroceder, en ensamblador se ejecutará la instrucción `pop` la cual hace que el último valor en el stack lo guardará en rbp, como quien dice recuperar el rbp base pointer de la función anterior función2. Ahora lo que tiene que hacer es recuperar el instruction pointer de la función2, así que tenemos la función `ret` que lo que hace es como un pop a rip.
+Una vez llegado a la última invocación de nuestro código vamos a tener que retroceder, en ensamblador se ejecutará la instrucción `pop rbp` la cual hace que el último valor en el stack lo guardará en rbp, como quien dice recuperar el rbp base pointer de la función anterior función2. Ahora lo que tiene que hacer es recuperar el instruction pointer de la función2, así que tenemos la función `ret` que lo que hace es como un pop a rip es decir quita el tope de el stack le da ese valor al rip, despues de eso suma a rsp + 1.
 
 Básicamente fue una explicación de lo que pasa con los apuntadores en la ejecución de ese programa, como se mueven y recuperan.
 
@@ -224,7 +224,7 @@ Damos `s` para introducirnos.
 
 Vemos cómo en el stack se asignó valor para guardar el arreglo de chars de nuestro programa en este caso 30 (todos los 0 de arriba).
 
-Gracias a esta instrucción: `sub rsp, 0x20` que le resta eso al registro rip para dejar espacio para nuestro arreglo.
+Gracias a esta instrucción: `sub rsp, 0x20` que le resta eso al registro rsp para dejar espacio para nuestro arreglo.
 ```
 0x00007fffffffdcb0│+0x0000: 0x0000000000000000   ← $rsp
 0x00007fffffffdcb8│+0x0008: 0x0000000000000000
@@ -327,7 +327,7 @@ gef➤
 
 Dirección: `0x0000000000401136 <+0>: push rbp` → `0000000000401136`
 
-Debemos poner eso en la dirección de main al aprovechar la reescritura del buffer.
+Debemos poner eso en la  `return addres [RIP]`  de main al aprovechar la reescritura del buffer.
 
 Primero vemos esto:
 ```
@@ -358,7 +358,7 @@ Ese `0x20` es lo que se resta para dejar el espacio para el arreglo. Entonces `0
 python2 -c "print b'A'*0x20"
 ```
 
-Con eso llenamos el primer bloque de 0 parejo, nos falta el de abajo que son 8 bytes así que:
+Con eso llenamos el primer bloque de 0 parejo, nos falta el de abajo que son 8 bytes porque estamos en x86_64 bits y es una direccion o valor de 8 bytes que es el rbp `;En el "Stack Frame", justo después de las variables locales, se guarda el `rbp` de la función anterior (el _Saved RBP_).;` así que para comerla también:
 ```bash
 python2 -c "print b'A'*0x20 + b'A'*8"
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -366,7 +366,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 ## Explotación final
 
-Entonces ahora hay que meterle la dirección de win PERO al revés por algo que dicen que el little endian o sabe qué:
+Entonces ahora hay que meterle la dirección de win PERO al revés por algo que dicen que el little endian algo que invierte el orden de las direcciones entonces como da debe recibir:
 ```
 0000000000401136 --> \x36\x11\x40\x00\x00\x00\x00\x00
 ```

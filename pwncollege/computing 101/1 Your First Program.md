@@ -1,18 +1,3 @@
----
-tags:
-  - #assembly
-  - #syscall
-  - #x86-64
-  - #registros
-  - #rax
-  - #rdi
-  - #rsi
-  - #exit
-  - #as
-  - #ld
-  - #intel-syntax
----
----
 tags:
   - #assembly
   - #syscall

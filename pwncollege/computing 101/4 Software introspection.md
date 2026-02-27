@@ -1,17 +1,3 @@
----
-tags:
-  - strace
-  - gdb
-  - syscalls
-  - execve
-  - alarm
-  - exit
-  - starti
-  - pwndebug
-  - GEF
-  - debugging
-  - binarios
----
 
 # Trazado de Syscalls con strace
 
@@ -38,3 +24,20 @@ En este caso realizó 3 llamadas: `execve`, `alarm`, `exit`, cada una con sus ar
 Después de eso una muy leve introducción a gdb. De gdb ya sé algunas cositas pero no tantas, en general ya sé cómo usarlo con el plugin de pwndebug y el de GEF.
 
 Solo que aquí mencionaron la instrucción `starti` que es la que se encarga de ejecutar la primera instrucción del programa, es decir, iniciarlo.
+
+
+Software Introspection - adicional
+
+p de print en fgdb p $rdi
+
+x simplemente printeara en hexadecimal
+
+lo que hizimos en un nivel anterior doble dereferencia para mostrar el valor de los texto de los argumentos con los que el binario fue invocado, simplemente ha y que hacer:
+
+x/a $rsp+16
+
++16 ya que +8 nos dariael nombre del binario y /a ya que a es pa que nos de el adress de lo que hay alli
+
+luegio
+
+x/s \<lo que dio\> /s es porque queremos ver un string que en este caso es la flag 
